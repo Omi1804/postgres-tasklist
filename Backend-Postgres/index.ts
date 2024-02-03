@@ -13,6 +13,11 @@ app.use(bodyParser.json());
 app.use("/auth", userRoutes);
 app.use("/todo", todoRoutes);
 
+// test api
+app.get("/", (req, res) => {
+  res.send("Hello");
+});
+
 //database connection
 const initDb = async () => {
   try {
