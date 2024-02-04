@@ -34,6 +34,7 @@ router.post("/signup", async (req: Request, res: Response) => {
       res.json({ message: "User created successfully", token });
     }
   } catch (err) {
+    console.log(err);
     res.json({ message: "Some Internal Errors" });
   }
 });
@@ -68,13 +69,21 @@ router.post("/login", async (req, res) => {
 });
 
 //me
-router.get("/me", async (req, res) => {
-  const { id } = req.headers;
+router.get("/me", authenticateUser, async (req, res) => {
+  const { email } = req.headers;
 
   const client = await getClient();
 
-  const selectUserText = `SELECT * FROM users WHERE id = $1`;
-  const userRes = await client.query(selectUserText, [id]);
+  const selectUserText = `SELECT * FROM users WHERE email = $1`;
+  const userRes = await client.query(selectUserText, [email]);
+
+  console.log(userRes);
+
+  if (userRes.rows.length > 0) {
+    res.status(200).json({ email: userRes.rows[0].email });
+  } else {
+    res.status(404).json({ message: "User not found!" });
+  }
 });
 
 export { router as userRoutes };
