@@ -33,5 +33,6 @@ const initDb = async () => {
 
 app.listen(PORT || 8080, async () => {
   console.log("Backend listening on port " + PORT);
+  console.clear();
   await initDb();
 });

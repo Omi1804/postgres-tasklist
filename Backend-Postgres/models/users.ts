@@ -12,6 +12,4 @@ export const createUserTable = async () => {
   `;
 
   await client.query(CreateTable);
-
-  console.log("Users Table created successfully!");
 };

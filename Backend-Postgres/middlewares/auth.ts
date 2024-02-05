@@ -16,6 +16,7 @@ const authenticateUser = (req: Request, res: Response, next: NextFunction) => {
       }
 
       // if everything is OK
+      req.headers["user_id"] = user.id;
       req.headers["email"] = user.email;
       next();
     });
