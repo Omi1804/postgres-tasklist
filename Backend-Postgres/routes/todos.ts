@@ -50,9 +50,21 @@ router.get("/todos", authenticateUser, async (req, res) => {
 });
 
 //updating the existing todo
-router.patch("/todos/:id", async (req, res) => {});
+router.patch("/todos/done", authenticateUser, async (req, res) => {
+  const { user_id } = req.headers;
+  try {
+    const client = await getClient();
+    const userText = `
+  UPDATE todos SET done = $1 WHERE user_id = $2
+  `;
 
-//deleting the existing todo
-router.delete("/todos/:id", async (req, res) => {});
+    const userRes = await client.query(userText, [user_id]);
+
+    return res.status(200).json({ message: "Todo updated successfully" });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ message: "Some Internal Error" });
+  }
+});
 
 export { router as todoRoutes };

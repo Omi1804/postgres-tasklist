@@ -11,7 +11,6 @@ export async function getClient() {
 
   try {
     await client.connect();
-    console.log("Database Connection established!");
     return client;
   } catch (error: any) {
     console.log("Error connecting to database " + error.message);
